@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.4.24;
 
 contract administrated {
     address public admin;
@@ -241,7 +241,8 @@ contract cityHall is administrated {
         // Check if the husband or the wife isn't already married
         WeddingContract[] memory husbandContracts = weddingContracts[_husbandAddress];
         uint husbandContractLength = husbandContracts.length;
-        for (uint i = 0; i < husbandContractLength; i++) {
+        uint i;
+        for (i = 0; i < husbandContractLength; i++) {
             require(!husbandContracts[i].active, "The husband is already married");
             require(husbandContracts[i].husbandAddress != _husbandAddress && husbandContracts[i].wifeAddress != _wifeAddress,
             "They are already married between them");
@@ -249,8 +250,9 @@ contract cityHall is administrated {
 
         WeddingContract[] memory wifeContracts = weddingContracts[_wifeAddress];
         uint wifeContractLength = wifeContracts.length;
-        for (uint i = 0; i < wifeContractLength; i++) {
-            require(!wifeContracts[i].active, "The wife is already married");
+        uint j;
+        for (j = 0; i < wifeContractLength; j++) {
+            require(!wifeContracts[j].active, "The wife is already married");
         }
 
         // Create the certificate and add it on both
