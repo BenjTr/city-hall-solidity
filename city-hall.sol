@@ -235,7 +235,6 @@ contract cityHall is administrated {
 
     function addWeddingContract(address _husbandAddress, address _wifeAddress, uint256 _weddingDate) public onlyAdmin returns(bool success) {
 
-
         // Husband and wife have to be in the map to create the wedding certificate
         require(persons[_husbandAddress].exist && persons[_wifeAddress].exist, "The husband or the wife isn't in our data-system");
 
@@ -264,6 +263,49 @@ contract cityHall is administrated {
 
         weddingContracts[_husbandAddress].push(weddingContract);
         weddingContracts[_wifeAddress].push(weddingContract);
+
+        return true;
+    }
+
+    function divorce(address _husbandAddress, address _wifeAddress) public onlyAdmin view returns(bool success) {
+
+        uint husbandWeddingContractIndex;
+        uint wifeWeddingContractIndex;
+
+        // Husband and wife have to be in the map to create the wedding certificate
+        require(persons[_husbandAddress].exist && persons[_wifeAddress].exist, "The husband or the wife isn't in our data-system");
+
+        //  Check that both are married
+        WeddingContract[] memory husbandContracts = weddingContracts[_husbandAddress];
+        WeddingContract[] memory wifeContracts = weddingContracts[_wifeAddress];
+
+        uint i = 0;
+        bool stop = false;
+
+        while ( i < husbandContracts.length || !stop) {
+            if(husbandContracts[i].wifeAddress == _wifeAddress){
+                require(husbandContracts[i].active, "They aren't married");
+                husbandWeddingContractIndex = i;
+                stop = true;
+            }
+            i++;
+        }
+
+        i = 0;
+        stop = false;
+
+        while ( i < wifeContracts.length || !stop) {
+            if(wifeContracts[i].husbandAddress == _husbandAddress){
+                require(wifeContracts[i].active, "They aren't married");
+                wifeWeddingContractIndex = i;
+                stop = true;
+            }
+            i++;
+        }
+
+        // Deactive Contract
+        husbandContracts[husbandWeddingContractIndex].active = false;
+        wifeContracts[wifeWeddingContractIndex].active = false;
 
         return true;
     }
