@@ -251,7 +251,7 @@ contract cityHall is administrated {
         WeddingContract[] memory wifeContracts = weddingContracts[_wifeAddress];
         uint wifeContractLength = wifeContracts.length;
         uint j;
-        for (j = 0; i < wifeContractLength; j++) {
+        for (j = 0; j < wifeContractLength; j++) { 
             require(!wifeContracts[j].active, "The wife is already married");
         }
 
@@ -269,7 +269,7 @@ contract cityHall is administrated {
         return true;
     }
 
-    function divorce(address _husbandAddress, address _wifeAddress) public onlyAdmin view returns(bool success) {
+    function divorce(address _husbandAddress, address _wifeAddress) public onlyAdmin returns(bool success) {
 
         uint husbandWeddingContractIndex;
         uint wifeWeddingContractIndex;
@@ -323,10 +323,9 @@ contract cityHall is administrated {
    function getSpecificWeddingContracts(address _personAddress) public onlyAdmin view
             returns(address[] memory, address[] memory, uint256[] memory) {
 
-       // Check if the person exist or the certificate exist
+       // Check if the person exist 
        require(persons[_personAddress].exist, "The person doesn't exist");
-       require(weddingContracts[_personAddress].length == 0, "No wedding contracts");
-
+       
        address[] memory husbandAddresses = new address[](weddingContracts[_personAddress].length);
        address[] memory wifeAddresses = new address[](weddingContracts[_personAddress].length);
        uint256[] memory weddingDates = new uint256[](weddingContracts[_personAddress].length);
@@ -348,9 +347,8 @@ contract cityHall is administrated {
 
    function getWeddingContracts() public view returns(address[] memory, address[] memory, uint256[] memory) {
 
-       // Check if the person exist or the certificate exist
+       // Check if the person exist
        require(persons[msg.sender].exist, "The person doesn't exist");
-       require(weddingContracts[msg.sender].length == 0, "No wedding contracts");
 
        address[] memory husbandAddresses = new address[](weddingContracts[msg.sender].length);
        address[] memory wifeAddresses = new address[](weddingContracts[msg.sender].length);
